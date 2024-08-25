@@ -1,0 +1,50 @@
+package com.atm.services;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.atm.entities.Transaction;
+import com.atm.repositorie.TransactionRepository;
+import com.atm.serviceinterface.TransactionServiceInterface;
+
+@Service
+public class TransactionService implements TransactionServiceInterface{
+	
+	@Autowired
+	private  TransactionRepository transactionRepository;
+
+	
+    public TransactionService(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
+
+    public void saveTransaction(String tranId, String atmId, String customerId, double amount,
+                                String tranType, String tranStatus, String upiStatus) {
+        // Create a new Transaction1 object
+        Transaction transaction = new Transaction();
+        transaction.setTranId(tranId);
+        transaction.setAtmId(atmId);
+        transaction.setCustomerId(customerId);
+        transaction.setAmount(amount);
+        transaction.setTranType(tranType);
+        transaction.setTranStatus(tranStatus);
+        transaction.setUpiStatus(upiStatus);
+        transaction.setInsertedOn(LocalDateTime.now());
+        transaction.setUpdatedOn(LocalDateTime.now());
+
+        // Save the transaction to the repository
+        transactionRepository.save(transaction);
+    }
+    
+  
+	public List<Transaction> FindAlltranc()
+	{
+		return transactionRepository.findAll();
+	}
+
+	
+}
+
+    

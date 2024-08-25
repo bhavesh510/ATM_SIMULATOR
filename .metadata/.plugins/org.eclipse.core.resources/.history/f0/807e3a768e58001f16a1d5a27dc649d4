@@ -1,0 +1,70 @@
+package com.atm.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.atm.entities.Atm;
+import com.atm.entities.Customer;
+import com.atm.entities.Withdraw;
+import com.atm.entities.WithdrawResponse;
+import com.atm.serviceinterface.WithdrawInterface;
+
+@Service
+public class FastCashServic implements WithdrawInterface {
+
+    @Autowired
+    private AtmService atmservice;
+    @Autowired
+    private CustomerService custServiceRef;
+
+    @Override
+    public WithdrawResponse accessRequets(Withdraw obj) {
+        // Retrieve ATM and customer details
+        Atm atmref = atmservice.findAtmById(1);
+        Customer cust = custServiceRef.findCustomerByCardNumber(obj.getCardNo());
+        double localWithdraw = obj.getMoney();
+
+        double[] allowedCash = {200, 100, 500, 2000};
+
+        // Check for successful withdrawal
+        for (double allowedAmount : allowedCash) {
+            if (allowedAmount == localWithdraw && allowedAmount <= atmref.getTotalCash()) {
+                if (obj.getCardPin() == cust.getCardPin()) {
+                    double cascadeType = localWithdraw;
+
+                    // Update ATM cash counters (assuming methods exist)
+                    switch ((int) cascadeType) {
+                        case 2000:
+                            atmservice.updatec_type1CounterAtm(atmref, atmref.getC_type1Counter() - 1, atmref.getId());
+                            break;
+                        case 500:
+                            atmservice.updatec_type2CounterAtm(atmref, atmref.getC_type2Counter() - 1, atmref.getId());
+                            break;
+                        case 200:
+                            atmservice.updatec_type3CounterAtm(atmref, atmref.getC_type3Counter() - 1, atmref.getId());
+                            break;
+                        case 100:
+                            atmservice.updatec_type4CounterAtm(atmref, atmref.getC_type4Counter() - 1, atmref.getId());
+                            break;
+                        default:
+                            // Handle invalid withdrawal amount (optional)
+                            break;
+                    }
+
+                    // Update ATM total cash and customer balance
+                    atmservice.updateTotalCashAtm(atmref, -localWithdraw, 1);
+                    cust.setCurrBalance(cust.getCurrBalance() - localWithdraw);
+
+                    return new WithdrawResponse(true, "Transaction successful", cust.getCurrBalance());
+                }
+            }
+        }
+        // Handle unsuccessful scenarios
+        if (obj.getCardPin() != cust.getCardPin()) {
+            return new WithdrawResponse(false, "Pin Incorrect", cust.getCurrBalance());
+        } else {
+            return new WithdrawResponse(false, "Insufficient funds or invalid amount", cust.getCurrBalance());
+        }
+    }
+}
+

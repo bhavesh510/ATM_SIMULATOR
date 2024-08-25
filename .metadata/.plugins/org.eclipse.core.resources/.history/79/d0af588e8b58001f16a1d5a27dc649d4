@@ -1,0 +1,59 @@
+
+ package com.atm.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.atm.entities.Atm;
+import com.atm.entities.Transaction;
+import com.atm.services.TransactionService;
+
+@RestController
+public class TransactionController {
+	@Autowired
+	private final TransactionService transactionService;
+
+
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
+    }
+	
+    @PostMapping("/api/submit-transaction")
+    public ResponseEntity<String> submitTransaction(@RequestParam String tranId,
+                                                    @RequestParam String customerId,
+                                                    @RequestParam String atmId,
+                                                    @RequestParam double amount) {
+        try {
+            // Set default values for the transaction
+            String tranType = "DEBIT";  
+            String tranStatus = "SUCCESS"; 
+            String upiStatus = "COMPLETED"; 
+
+            // Save transaction data
+            transactionService.saveTransaction(tranId, atmId, customerId, amount, tranType, tranStatus, upiStatus);
+
+            String responseMessage = String.format("Transaction saved successfully. TranId: %s, CustomerId: %d, AtmId: %d, Amount: %.2f", 
+                                                   tranId, customerId, atmId, amount);
+            return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/api/Getalltranc")
+	public List<Transaction> getAlltranc()
+	{
+		return transactionService.FindAlltranc();
+	}
+	
+
+}
+
+    

@@ -1,0 +1,3 @@
+update atm
+set c_type2counter=50
+where id=1;
