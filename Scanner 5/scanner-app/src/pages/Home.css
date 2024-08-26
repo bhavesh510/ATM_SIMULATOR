@@ -1,0 +1,129 @@
+.payment-page {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    /* background-color: ; */
+    height: 100vh;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo-left, .logo-right {
+    width: 50px;
+    height: 50px;
+    /* background-color: #ddd; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    gap: 20px;
+}
+.notification{
+    margin-right: 10px;
+}
+
+.logo-center {
+    flex-grow: 1;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.main-content {
+    /* padding: 20px; */
+    margin-top: 80px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn1{
+    padding: 10px 20px;
+    border: none;
+    background-color: #4998ec;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn2{
+    padding: 10px 20px;
+    border: none;
+    background-color: #4998ec;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.bottom-box {
+    padding-top: 20px;
+    margin-top: 30px;
+    background-color: #ddd;
+    text-align: center;
+}
+
+.bottom-box-title {
+    
+    font-size: 1.2rem;
+    margin-bottom: 3px;
+}
+
+.options {
+    padding-bottom: 10px;
+    padding-left: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.options2 {
+    margin-left: -10px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    /* margin-top: 60px; */
+    /* gap: 30px; */
+}
+#id1{
+    margin-left: 10px;
+}
+#id2{
+    margin-left: 43px;
+}
+#id3{
+    margin-left: 50px;
+}
+#id4{
+    margin-left: 60px;
+}
+
+.option-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #f1f1f1;
+    color: #333;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.option-btn:hover {
+    background-color: lawngreen;
+}
